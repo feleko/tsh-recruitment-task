@@ -12,5 +12,4 @@ import { JoiPipeModule } from 'nestjs-joi';
   exports: [GenresService],
   imports: [JoiPipeModule],
 })
-export class MoviesModule {
-}
+export class MoviesModule {}

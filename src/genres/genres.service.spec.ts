@@ -40,7 +40,9 @@ describe('GenresService', () => {
       const mockError = new DatabaseLoadException('Failed to load database');
       jest.spyOn(dbService, 'loadDatabase').mockRejectedValue(mockError);
 
-      await expect(service.getAllGenres()).rejects.toThrow(DatabaseLoadException);
+      await expect(service.getAllGenres()).rejects.toThrow(
+        DatabaseLoadException,
+      );
     });
 
     it('should return an empty array if there are no genres', async () => {

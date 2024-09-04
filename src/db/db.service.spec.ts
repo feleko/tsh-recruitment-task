@@ -47,20 +47,26 @@ describe('DbService', () => {
       (fs.promises.readFile as jest.Mock).mockRejectedValue(mockError);
       (fs.existsSync as jest.Mock).mockReturnValue(true);
 
-      await expect(service.loadDatabase()).rejects.toThrow(DatabaseLoadException);
+      await expect(service.loadDatabase()).rejects.toThrow(
+        DatabaseLoadException,
+      );
     });
 
     it('should throw DatabaseLoadException if the file does not exist', async () => {
       (fs.existsSync as jest.Mock).mockReturnValue(false);
 
-      await expect(service.loadDatabase()).rejects.toThrow(DatabaseLoadException);
+      await expect(service.loadDatabase()).rejects.toThrow(
+        DatabaseLoadException,
+      );
     });
 
     it('should throw DatabaseLoadException if JSON parsing fails', async () => {
       (fs.promises.readFile as jest.Mock).mockResolvedValue('invalid json');
       (fs.existsSync as jest.Mock).mockReturnValue(true);
 
-      await expect(service.loadDatabase()).rejects.toThrow(DatabaseLoadException);
+      await expect(service.loadDatabase()).rejects.toThrow(
+        DatabaseLoadException,
+      );
     });
   });
 
@@ -82,7 +88,9 @@ describe('DbService', () => {
 
       const mockDatabase: Database = { movies: [], genres: [] };
 
-      await expect(service.saveDatabase(mockDatabase)).rejects.toThrow(DatabaseSaveException);
+      await expect(service.saveDatabase(mockDatabase)).rejects.toThrow(
+        DatabaseSaveException,
+      );
     });
   });
 });

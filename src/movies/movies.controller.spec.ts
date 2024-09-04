@@ -37,14 +37,16 @@ describe('MoviesController', () => {
 
   describe('getMovies', () => {
     it('should return a random movie if no filters are provided', async () => {
-      const mockMovie: Movies = [{
-        id: 1,
-        title: 'Random Movie',
-        genres: ['Action'],
-        runtime: 120,
-        year: 2021,
-        director: 'Test Director',
-      }];
+      const mockMovie: Movies = [
+        {
+          id: 1,
+          title: 'Random Movie',
+          genres: ['Action'],
+          runtime: 120,
+          year: 2021,
+          director: 'Test Director',
+        },
+      ];
       jest.spyOn(moviesService, 'getRandomMovie').mockResolvedValue(mockMovie);
 
       const result = await controller.getMovies({} as FilterMoviesDto);
@@ -72,10 +74,13 @@ describe('MoviesController', () => {
         },
       ];
 
+      jest
+        .spyOn(moviesService, 'filterMoviesByDuration')
+        .mockResolvedValue([mockMovies[0]]);
 
-      jest.spyOn(moviesService, 'filterMoviesByDuration').mockResolvedValue([mockMovies[0]]);
-
-      const result = await controller.getMovies({ duration: 120 } as FilterMoviesDto);
+      const result = await controller.getMovies({
+        duration: 120,
+      } as FilterMoviesDto);
 
       result.forEach((movie, index) => {
         expect(movie.title).toEqual(mockMovies[index].title);
@@ -84,7 +89,6 @@ describe('MoviesController', () => {
         expect(movie.director).toEqual(mockMovies[index].director);
         expect(movie.year).toEqual(mockMovies[index].year);
       });
-
     });
   });
   describe('createMovie', () => {

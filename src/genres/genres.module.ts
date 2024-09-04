@@ -5,5 +5,4 @@ import { DbService } from '../db/db.service';
 @Module({
   providers: [GenresService, DbService],
 })
-export class GenresModule {
-}
+export class GenresModule {}

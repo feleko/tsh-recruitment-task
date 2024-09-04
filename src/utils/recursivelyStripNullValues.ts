@@ -4,7 +4,10 @@ function recursivelyStripNullValues(value: unknown): unknown {
   }
   if (value !== null && typeof value === 'object') {
     return Object.fromEntries(
-      Object.entries(value).map(([key, value]) => [key, recursivelyStripNullValues(value)]),
+      Object.entries(value).map(([key, value]) => [
+        key,
+        recursivelyStripNullValues(value),
+      ]),
     );
   }
   if (value !== null) {

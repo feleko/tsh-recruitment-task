@@ -75,7 +75,10 @@ describe('MoviesService', () => {
       const result = await service.createMovie(createMovieDto);
 
       expect(dbService.loadDatabase).toHaveBeenCalled();
-      expect(dbService.saveDatabase).toHaveBeenCalledWith({ ...mockDatabase, movies: [newMovie] });
+      expect(dbService.saveDatabase).toHaveBeenCalledWith({
+        ...mockDatabase,
+        movies: [newMovie],
+      });
       expect(result).toEqual(newMovie);
     });
 
@@ -92,10 +95,14 @@ describe('MoviesService', () => {
       };
       const validGenres: Genres = ['Sci-Fi', 'Thriller', 'Action'];
 
-      jest.spyOn(dbService, 'loadDatabase').mockResolvedValue({ movies: [], genres: validGenres });
+      jest
+        .spyOn(dbService, 'loadDatabase')
+        .mockResolvedValue({ movies: [], genres: validGenres });
       jest.spyOn(genresService, 'getAllGenres').mockResolvedValue(validGenres);
 
-      await expect(service.createMovie(createMovieDto)).rejects.toThrow(InvalidGenresException);
+      await expect(service.createMovie(createMovieDto)).rejects.toThrow(
+        InvalidGenresException,
+      );
     });
 
     it('should throw DuplicateGenresException for duplicate genres', async () => {
@@ -111,10 +118,14 @@ describe('MoviesService', () => {
       };
       const validGenres: Genres = ['Sci-Fi', 'Thriller', 'Action'];
 
-      jest.spyOn(dbService, 'loadDatabase').mockResolvedValue({ movies: [], genres: validGenres });
+      jest
+        .spyOn(dbService, 'loadDatabase')
+        .mockResolvedValue({ movies: [], genres: validGenres });
       jest.spyOn(genresService, 'getAllGenres').mockResolvedValue(validGenres);
 
-      await expect(service.createMovie(createMovieDto)).rejects.toThrow(DuplicateGenresException);
+      await expect(service.createMovie(createMovieDto)).rejects.toThrow(
+        DuplicateGenresException,
+      );
     });
   });
 
@@ -156,18 +167,29 @@ describe('MoviesService', () => {
         },
       ];
       const duration = 105;
-      jest.spyOn(dbService, 'loadDatabase').mockResolvedValue({ movies: mockMovies, genres: [] });
+      jest
+        .spyOn(dbService, 'loadDatabase')
+        .mockResolvedValue({ movies: mockMovies, genres: [] });
 
       const result = await service.filterMoviesByDuration(duration);
 
       expect(result.length).toBe(1);
-      expect(mockMovies.some(movie => movie.runtime >= duration - 10 && movie.runtime <= duration + 10)).toBe(true);
+      expect(
+        mockMovies.some(
+          movie =>
+            movie.runtime >= duration - 10 && movie.runtime <= duration + 10,
+        ),
+      ).toBe(true);
     });
 
     it('should throw NoMoviesFoundException if no movies match the duration', async () => {
-      jest.spyOn(dbService, 'loadDatabase').mockResolvedValue({ movies: [], genres: [] });
+      jest
+        .spyOn(dbService, 'loadDatabase')
+        .mockResolvedValue({ movies: [], genres: [] });
 
-      await expect(service.filterMoviesByDuration(105)).rejects.toThrow(NoMoviesFoundException);
+      await expect(service.filterMoviesByDuration(105)).rejects.toThrow(
+        NoMoviesFoundException,
+      );
     });
   });
 
@@ -209,7 +231,9 @@ describe('MoviesService', () => {
         },
       ];
       const filterDto: FilterMoviesDto = { duration: 115, genres: ['Action'] };
-      jest.spyOn(dbService, 'loadDatabase').mockResolvedValue({ movies: mockMovies, genres: [] });
+      jest
+        .spyOn(dbService, 'loadDatabase')
+        .mockResolvedValue({ movies: mockMovies, genres: [] });
 
       const result = await service.filterMovies(filterDto);
 
@@ -243,7 +267,9 @@ describe('MoviesService', () => {
         },
       ];
       const filterDto: FilterMoviesDto = { duration: 105, genres: [] };
-      jest.spyOn(dbService, 'loadDatabase').mockResolvedValue({ movies: mockMovies, genres: [] });
+      jest
+        .spyOn(dbService, 'loadDatabase')
+        .mockResolvedValue({ movies: mockMovies, genres: [] });
 
       const result = await service.filterMovies(filterDto);
 
@@ -252,9 +278,13 @@ describe('MoviesService', () => {
 
     it('should throw NoMoviesFoundException if no movies match the filter criteria', async () => {
       const filterDto: FilterMoviesDto = { duration: 200, genres: ['Action'] };
-      jest.spyOn(dbService, 'loadDatabase').mockResolvedValue({ movies: [], genres: [] });
+      jest
+        .spyOn(dbService, 'loadDatabase')
+        .mockResolvedValue({ movies: [], genres: [] });
 
-      await expect(service.filterMovies(filterDto)).rejects.toThrow(NoMoviesFoundException);
+      await expect(service.filterMovies(filterDto)).rejects.toThrow(
+        NoMoviesFoundException,
+      );
     });
   });
 
@@ -284,7 +314,9 @@ describe('MoviesService', () => {
           posterUrl: '',
         },
       ];
-      jest.spyOn(dbService, 'loadDatabase').mockResolvedValue({ movies: mockMovies, genres: [] });
+      jest
+        .spyOn(dbService, 'loadDatabase')
+        .mockResolvedValue({ movies: mockMovies, genres: [] });
 
       const result = await service.getRandomMovie();
 
@@ -293,9 +325,13 @@ describe('MoviesService', () => {
     });
 
     it('should throw NoMoviesFoundException if no movies are available', async () => {
-      jest.spyOn(dbService, 'loadDatabase').mockResolvedValue({ movies: [], genres: [] });
+      jest
+        .spyOn(dbService, 'loadDatabase')
+        .mockResolvedValue({ movies: [], genres: [] });
 
-      await expect(service.getRandomMovie()).rejects.toThrow(NoMoviesFoundException);
+      await expect(service.getRandomMovie()).rejects.toThrow(
+        NoMoviesFoundException,
+      );
     });
   });
 });

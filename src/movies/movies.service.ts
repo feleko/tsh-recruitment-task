@@ -11,8 +11,10 @@ import { FilterMoviesDto } from './dto/filter-movies.dto';
 
 @Injectable()
 export class MoviesService {
-  constructor(private readonly db: DbService, private readonly genresService: GenresService) {
-  }
+  constructor(
+    private readonly db: DbService,
+    private readonly genresService: GenresService,
+  ) {}
 
   async getAllMovies(): Promise<Movies> {
     const { movies } = await this.db.loadDatabase();
@@ -21,7 +23,9 @@ export class MoviesService {
 
   async createMovie(createMovieDto: CreateMovieDto): Promise<Movie> {
     const validGenres = await this.genresService.getAllGenres();
-    const invalidGenres = createMovieDto.genres.filter(genre => !validGenres.includes(genre));
+    const invalidGenres = createMovieDto.genres.filter(
+      genre => !validGenres.includes(genre),
+    );
 
     if (invalidGenres.length > 0) {
       throw new InvalidGenresException(invalidGenres);
@@ -34,7 +38,9 @@ export class MoviesService {
 
     const database = await this.db.loadDatabase();
     const newMovie: Movie = {
-      id: database.movies.length ? database.movies[database.movies.length - 1].id + 1 : 1,
+      id: database.movies.length
+        ? database.movies[database.movies.length - 1].id + 1
+        : 1,
       ...createMovieDto,
     };
     database.movies.push(newMovie);
@@ -46,7 +52,8 @@ export class MoviesService {
     const movies = await this.getAllMovies();
 
     const filteredMovies = movies.filter(
-      (movie: Movie) => movie.runtime >= (duration - 10) && movie.runtime <= (duration + 10),
+      (movie: Movie) =>
+        movie.runtime >= duration - 10 && movie.runtime <= duration + 10,
     );
 
     if (filteredMovies.length === 0) {
@@ -63,7 +70,8 @@ export class MoviesService {
 
     if (duration) {
       movies = movies.filter(
-        (movie: Movie) => movie.runtime >= (duration - 10) && movie.runtime <= (duration + 10),
+        (movie: Movie) =>
+          movie.runtime >= duration - 10 && movie.runtime <= duration + 10,
       );
     }
 
@@ -72,8 +80,10 @@ export class MoviesService {
 
       const groupedMovies: { [key: number]: Movies } = {};
 
-      movies.forEach((movie) => {
-        const matchCount = movie.genres.filter((g: Genre) => lowerCaseGenres.includes(g.toLowerCase())).length;
+      movies.forEach(movie => {
+        const matchCount = movie.genres.filter((g: Genre) =>
+          lowerCaseGenres.includes(g.toLowerCase()),
+        ).length;
 
         if (matchCount > 0) {
           if (!groupedMovies[matchCount]) {

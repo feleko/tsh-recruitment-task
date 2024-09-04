@@ -6,14 +6,16 @@ import { MoviesService } from './movies.service';
 
 @Controller('movies')
 export class MoviesController {
-  constructor(private readonly movieService: MoviesService) {
-  }
+  constructor(private readonly movieService: MoviesService) {}
 
   @HttpCode(200)
   @Post('/filter')
   async getMovies(@Body() filterMoviesDto: FilterMoviesDto): Promise<Movies> {
     const { duration, genres } = filterMoviesDto;
-    if (duration && genres && genres.length > 0 || genres && genres.length > 0) {
+    if (
+      (duration && genres && genres.length > 0) ||
+      (genres && genres.length > 0)
+    ) {
       return await this.movieService.filterMovies(filterMoviesDto);
     } else if (duration && !genres) {
       return await this.movieService.filterMoviesByDuration(duration);
